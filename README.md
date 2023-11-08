@@ -1,4 +1,4 @@
-# PDE-labbar
+# PDE-Labbar
 
 ### Lab 1
 yep
