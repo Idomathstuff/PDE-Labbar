@@ -12,7 +12,7 @@ N = 6;
 v1 = yp_points;  % v1 = y
 v2 = 1 - xp_points;  % v2 = 1 - x
 
-%----------------get n1n2 pattern------------------%
+
 n1n2_vector = zeros((2*N+1)^2,2);
 counter = 1;
 for n1 = -N:N
@@ -21,10 +21,8 @@ for n1 = -N:N
         counter=counter+1;
     end
 end
-%------------------END----------------------------%
 
 
-%-------------------Get v_hat--------------------%
 A = zeros(M,(2*N+1)^2); 
 for row = 1:M
     for col = 1:(2*N+1)^2
@@ -34,13 +32,12 @@ for row = 1:M
         A(row,col) = exp(k*dotted_term*1i);
     end
 end
-v_hat_1 = (A'*A)\(A'*v1);
 
-v_hat_2 = (A'*A)\(A'*v2);
+v_hat_1 = ((A'*A).^-1)*A'*v1;
+v_hat_2 = ((A'*A).^-1)*A'*v2;
 
-%----------------------END-------------------------%
 
-%-----------------Make a f val vector with all x and y points---------------%
+%%%%% Make a f val vector with all x and y points%%%%%
 f_vals_p = zeros(M,1);
 for row = 1:M
     xp = xp_points(row,1);
@@ -52,20 +49,26 @@ for row = 1:M
         f_vals_p(row,1) = 0;
     end
 end
-f_hat = inv(A'*A)\(A'*f_vals_p);
-%-----------------END-------------------------------------------------------%
+
+f_hat = ((A'*A).^-1)*A'*f_vals_p;
 
 
 v_1_tilda = @(x, y) real(v_hat_1' * exp(1i * k * n1n2_vector * [x; y]));
 v_2_tilda = @(x, y) real(v_hat_2' * exp(1i * k * n1n2_vector * [x; y]));
 f_tilda = @(x,y) real(f_hat' * exp(1i * k * n1n2_vector * [x; y]));
 
+% Assuming you've defined f_tilda as mentioned in your code
+
 % Generate a grid of points for x and y
-[x, y] = meshgrid(linspace(0, 1, 100), l    inspace(0, 1, 100));
+[x, y] = meshgrid(linspace(0, 1, 100), linspace(0, 1, 100));
+
+% Evaluate f_tilda for each point in the grid
 z = arrayfun(@(x, y) f_tilda(x, y), x, y);
+% 
+% % Plot the 3D surface
 figure;
 surf(x, y, z);
-title('3D Plot of f_{tilda}');
+title('3D Plot of f_tilda');
 xlabel('x');
 ylabel('y');
 zlabel('f_tilda');
