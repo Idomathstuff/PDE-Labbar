@@ -1,0 +1,28 @@
+K = 10; % K val (see lab1 description)
+k1 = 2;
+k2 = 1;
+
+ds = 0.1; % time step size for time variable s (see lab1 desc.)
+s_stop = 10; % stopper value for time s
+n_stop = round(abs(s_stop) / ds); % iterations required to reach stopper value
+
+pos = [k1/K; k2/K]; % starter value x(0) (position of air particle)
+u = f_tilda(pos(1), pos(2));
+
+% Store the positions at each step
+pos_history = zeros(2, n_stop + 1);
+pos_history(:, 1) = pos;
+
+for i = 1:n_stop
+    u = u + f_tilda(pos(1), pos(2));
+    pos = pos + ds .* [v_givna(pos(1), pos(2)); v_2_tilda(pos(1), pos(2))];
+    pos_history(:, i + 1) = pos;
+end
+
+% Plot the trajectory
+figure;
+plot(pos_history(1, :), pos_history(2, :), '-o');
+title('Trajectory of the Air Particle');
+xlabel('k1/K');
+ylabel('y);
+grid on;

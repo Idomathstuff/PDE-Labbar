@@ -65,6 +65,9 @@ f_hat = (A'*A)\(A'*f_vals_p );
 %_________FOURIER APPROXIMATIONS DEFINED AS ANONYMOUS FUNCTIONS_________
 v_1_tilda = @(x, y) real(v_hat_1' * exp(1i * k * n1n2_vector * [x; y]));
 v_2_tilda = @(x, y) real(v_hat_2' * exp(1i * k * n1n2_vector * [x; y]));
+
+v_tilda = @(x,y) [v_1_tilda(x,y);v_2_tilda(x,y)]; % combining in to one vector
+
 f_tilda = @(x,y) real(f_hat' * exp(1i * k * n1n2_vector * [x; y]));
 
 
