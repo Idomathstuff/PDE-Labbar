@@ -6,7 +6,7 @@ N = 3; % largest magnitude of n1 and n2
 % xp_points = linspace(-1,1,M)';
 % yp_points = linspace(-1,1,M)';
 % END NOTE
-
+    
 %______generate xp and yp points_______
 
 % xp_points = 2*rand(M,1); % generates on [0,2] (comment out)
