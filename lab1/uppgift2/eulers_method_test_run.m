@@ -15,7 +15,8 @@ y_values = zeros(num_iterations, 1);
 for i = 1:num_iterations
     % Compute the velocity using the v_givna function
     [v1, v2] = v_givna(x0, y0);
-    
+    % v1 = v_1_tilda(x0,y0);
+    % v2 = v_2_tilda(x0,y0);
     % Update the position using Euler's method
     x1 = x0 + v1 * dt;
     y1 = y0 + v2 * dt;

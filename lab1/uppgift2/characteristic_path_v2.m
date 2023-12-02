@@ -5,52 +5,61 @@ n_stop = round(abs(s_stop) / ds); % iterations required to reach stopper value
 
 % Create a grid of k1 and k2 values
 k_values = 1:10;
-[K1, K2] = meshgrid(k_values, k_values);
+[K1, K2] = meshgrid(k_values);
 
-% Initialize a cell array to store trajectories for each k1, k2 pair
-trajectories = cell(size(K1));
+% Initialize a 3x10x100 array to store trajectories
+trajectories = zeros(3, 10, 100);
 
 % Loop through all combinations of k1 and k2
 for i = 1:numel(K1)
+    
     k1 = K1(i);
     k2 = K2(i);
     
     pos = [k1/K; k2/K];
     u = f_tilda(pos(1), pos(2));
-    
-    % Store the positions and concentrations at each step
-    pos_history = zeros(3, n_stop + 1);
-    pos_history(1:2, 1) = pos;
-    pos_history(3, 1) = u;
+
 
     for j = 1:n_stop
+        trajectories(:, j, i) = [pos; u];
         u = u + ds .* f_tilda(pos(1), pos(2)); 
         v1_at_pos = pos(2);
-        v2_at_pos = 1-pos(1);
+        v2_at_pos = 1 - pos(1);
+        % v1_at_pos = v_1_tilda(pos(1),pos(2));
+        % v2_at_pos = v_2_tilda(pos(1),pos(2));
         pos = pos + ds .* [v1_at_pos; v2_at_pos];
-        pos_history(1:2, j + 1) = pos;
-        pos_history(3, j + 1) = u;
+        
+        
     end
-
-    % Store the trajectory for the current k1, k2 pair
-    trajectories{i} = pos_history;
 end
 
 % Plot the 3D trajectories
 figure;
 for i = 1:numel(K1)
-    plot3(trajectories{i}(1, :), trajectories{i}(2, :), trajectories{i}(3, :), '-O');
+    plot3(squeeze(trajectories(1, :, i)), squeeze(trajectories(2, :, i)), squeeze(trajectories(3, :, i)), '-O');
     hold on;
 end
 
 % Scatter plot for initial positions
 scatter(K1(:)/K, K2(:)/K, 'r', 'filled');
-title('3D Trajectories with Concentration for Different k1, k2 Values');
+title('3D trajectory of concentration and position for different starting points on the k1,k2 grid');
 xlabel('x');
 ylabel('y');
 zlabel('Concentration (u)');
 grid on;
 legend('Trajectories', 'Initial Positions');
 
-
-
+%2d plot
+% figure;
+% for i = 1:numel(K1)
+% 
+%     plot(squeeze(trajectories(1, :, i)), squeeze(trajectories(2, :, i)), '-O');
+%     hold on
+% end
+% scatter(K1(:)/K, K2(:)/K, 'r', 'filled');
+% title('Contour plot');
+% xlabel('x');
+% ylabel('y');
+% grid on;
+% legend('Trajectories', 'Initial Positions');
+% 

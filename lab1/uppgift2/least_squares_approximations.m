@@ -1,6 +1,6 @@
 M = 1000; % The # of points generated for fourier series approximation
 k = 2*pi; % Exp power coefficient
-N = 3; % largest magnitude of n1 and n2
+N = 6; % largest magnitude of n1 and n2
 
 % NOTE: We are not using linspace as seen here because they'll make A'*A matrix singular
 % xp_points = linspace(-1,1,M)';
